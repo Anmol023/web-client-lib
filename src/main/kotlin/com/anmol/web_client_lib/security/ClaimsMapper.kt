@@ -8,6 +8,7 @@ fun interface ClaimsMapper {
 
 @Component
 class DefaultClaimsMapper : ClaimsMapper {
+    @Suppress("UNCHECKED_CAST")
     override fun map(claims: Map<String, Any>): CustomerAuthenticationData {
         val mobileNumber = claims["mobileNumber"] as? String ?: throw IllegalArgumentException("Missing mobileNumber")
         val roleStr = claims["role"] as? String ?: throw IllegalArgumentException("Missing role")

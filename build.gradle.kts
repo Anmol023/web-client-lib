@@ -1,17 +1,20 @@
+import org.gradle.kotlin.dsl.withType
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
-	kotlin("jvm") version "1.9.25"
-	kotlin("plugin.spring") version "1.9.25"
+	kotlin("jvm") version "2.3.0"
+	kotlin("plugin.spring") version "2.3.0"
 	id("org.springframework.boot") version "4.0.5"
 	id("io.spring.dependency-management") version "1.1.7"
-	id("org.graalvm.buildtools.native") version "0.10.6"
 }
 
 group = "com.anmol"
 version = "0.0.1-SNAPSHOT"
+
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+	sourceCompatibility = JavaVersion.VERSION_25
+	targetCompatibility = JavaVersion.VERSION_25
 }
 
 repositories {
@@ -40,12 +43,14 @@ dependencies {
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-kotlin {
-	compilerOptions {
-		freeCompilerArgs.addAll("-Xjsr305=strict")
+tasks{
+	withType<Test> {
+		useJUnitPlatform()
 	}
-}
 
-tasks.withType<Test> {
-	useJUnitPlatform()
+	withType<KotlinCompile>{
+		compilerOptions.freeCompilerArgs.add("-Xjsr305=strict")
+		compilerOptions.freeCompilerArgs.set(listOf("-Xannotation-default-target=param-property"))
+		compilerOptions.jvmTarget.set(JvmTarget.JVM_25)
+	}
 }

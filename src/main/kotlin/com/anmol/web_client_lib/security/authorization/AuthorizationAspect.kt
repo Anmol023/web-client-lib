@@ -2,6 +2,7 @@ package com.anmol.web_client_lib.security.authorization
 
 import com.anmol.web_client_lib.expection_handling.ErrorResponse
 import com.anmol.web_client_lib.expection_handling.ForbiddenException
+import com.anmol.web_client_lib.security.CustomerAuthenticationDataUtil
 import org.aspectj.lang.ProceedingJoinPoint
 import org.aspectj.lang.annotation.Around
 import org.aspectj.lang.annotation.Aspect
@@ -21,7 +22,7 @@ class AuthorizationAspect(
     fun performAction(proceedingJoinPoint: ProceedingJoinPoint, authorization: Authorization): Mono<Any> {
         return customerAuthenticationDataUtil.fetchCustomerAuthenticationData()
             .flatMap { customerAuthenticationData ->
-                val role = customerAuthenticationData!!.role
+                val role = customerAuthenticationData.role
                 val allowedRoles = authorization.allowedRoles
                 val notAllowedRoles = authorization.notAllowedRoles
                 if ((allowedRoles.isNotEmpty() && !allowedRoles.contains(role)) ||
