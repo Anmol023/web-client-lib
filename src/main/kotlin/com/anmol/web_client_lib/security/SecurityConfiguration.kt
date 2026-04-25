@@ -23,7 +23,7 @@ import reactor.core.publisher.Mono
 
 @Suppress("UNCHECKED_CAST")
 @Configuration
-@ComponentScan("com.axis.thanos.security")
+@ComponentScan("com.anmol.web_client_lib.security")
 @EnableWebFluxSecurity
 @EnableConfigurationProperties(SecurityProperties::class)
 class SecurityConfiguration(val securityProperties: SecurityProperties) {

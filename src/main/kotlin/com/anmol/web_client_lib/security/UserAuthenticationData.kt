@@ -26,6 +26,17 @@ enum class Role(val value:String){
     ADMIN("admin");
 
     companion object {
-        fun fromString(value: String) = Role.entries.find{ it.value == value}?: throw IllegalArgumentException("Invalid role value: $value")
+        fun fromString(value: String?) = Role.entries.find{ it.value == value}?: throw IllegalArgumentException("Invalid role value: $value")
     }
 }
+
+data class TokenValidationResponse(
+    val valid: Boolean = false,
+    val claims: Claims? = null
+)
+
+data class Claims(
+    val mobileNumber: String? = null,
+    val role: String? = null,
+    val loginMetadata: Map<String, Any>? = null
+)

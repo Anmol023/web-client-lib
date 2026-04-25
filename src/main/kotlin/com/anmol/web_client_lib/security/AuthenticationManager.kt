@@ -16,31 +16,13 @@ class AuthenticationManager(
             is AuthenticationToken -> {
                 tokenValidationService
                     .validate(authentication.token, authentication.requestUrl)
-                    .flatMap(mapToAuthenticationTokenOrError(authentication))
+                    .map { authentication.authenticated() }
             }
             is ExternalSystemAuthenticationToken -> {
                 externalTokenValidationService.validate(authentication)
-                    .flatMap(mapToAuthenticationTokenOrError(authentication))
+                    .map { authentication.authenticated() }
             }
             else -> Mono.error(CredentialsExpiredException("Token expired"))
-        }
-    }
-
-    private fun mapToAuthenticationTokenOrError(authentication: AuthenticationToken): (Boolean) -> Mono<UsernamePasswordAuthenticationToken> {
-        return {
-            if (it) Mono.just(authentication.authenticated())
-            else Mono.error(
-                CredentialsExpiredException("Token expired")
-            )
-        }
-    }
-
-    private fun mapToAuthenticationTokenOrError(authentication: ExternalSystemAuthenticationToken): (Boolean) -> Mono<UsernamePasswordAuthenticationToken> {
-        return {
-            if (it) Mono.just(authentication.authenticated())
-            else Mono.error(
-                CredentialsExpiredException("Token expired")
-            )
         }
     }
 }

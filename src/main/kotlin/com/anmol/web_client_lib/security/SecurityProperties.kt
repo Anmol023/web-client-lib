@@ -6,7 +6,7 @@ import org.springframework.http.server.PathContainer
 import org.springframework.web.util.pattern.PathPattern
 import org.springframework.web.util.pattern.PathPatternParser
 
-@ConfigurationProperties(prefix = "axis.security")
+@ConfigurationProperties(prefix = "web_client_lib.security")
 class SecurityProperties {
     var unauthenticatedEndpoints: Array<String> = arrayOf("")
     var externallyExposedEndpoints: Map<ExternalSystemType, Map<ExternallyExposedAuthenticated, Array<String>>> = emptyMap()
