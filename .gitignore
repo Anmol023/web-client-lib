@@ -1,5 +1,8 @@
 HELP.md
 .gradle
+gradle.properties
+private-key.asc
+private-key.b64
 build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
