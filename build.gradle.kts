@@ -7,13 +7,12 @@ plugins {
     kotlin("plugin.spring") version "2.3.0"
     id("org.springframework.boot") version "4.0.5"
     id("io.spring.dependency-management") version "1.1.7"
-    id("com.gradleup.nmcp") version "0.1.4"
     `maven-publish`
     signing
 }
 
 group = "io.github.anmol023"
-version = "0.0.1"
+version = "0.0.1-SNAPSHOT"
 description = "A reactive web client library for Spring Boot"
 
 java {
@@ -68,6 +67,15 @@ tasks {
             )
         }
     }
+
+    bootJar { enabled = false }
+
+    jar {
+        enabled = true
+        manifest {
+            attributes["Start-Class"] = ""
+        }
+    }
 }
 
 publishing {
@@ -119,24 +127,14 @@ publishing {
 
 signing {
     val signingKey = (findProperty("signingKey") as String?)?.let { String(Base64.decode(it)) }
-    val signingPassword = findProperty("signingPassword")
+    val signingPassword = findProperty("signingPassword") as String?
     if (signingKey != null && signingPassword != null) {
-        useInMemoryPgpKeys(signingKey as String, signingPassword as String)
+        useInMemoryPgpKeys(signingKey, signingPassword)
     }
     sign(publishing.publications["mavenJava"])
 }
 
 gradle.taskGraph.whenReady {
-    if (hasTask(":publishAllPublicationsToCentralPortal")) {
-        require(findProperty("signingKey") != null) { "signingKey is required for publishing" }
-        require(findProperty("signingPassword") != null) { "signingPassword is required for publishing" }
-    }
-}
-
-nmcp {
-    centralPortal {
-        username = findProperty("ossrhUsername") as String? ?: ""
-        password = findProperty("ossrhPassword") as String? ?: ""
-        publishingType = "AUTOMATIC"
-    }
+    require(findProperty("signingKey") != null) { "signingKey is required for publishing" }
+    require(findProperty("signingPassword") != null) { "signingPassword is required for publishing" }
 }
