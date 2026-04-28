@@ -3,21 +3,21 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import kotlin.io.encoding.Base64
 
 plugins {
-    kotlin("jvm") version "2.3.0"
-    kotlin("plugin.spring") version "2.3.0"
-    id("org.springframework.boot") version "4.0.5"
-    id("io.spring.dependency-management") version "1.1.7"
+    id("io.github.anmol023.dependency-version-management") version "0.0.3"
     `maven-publish`
     signing
+    `java-library`
 }
 
 group = "io.github.anmol023"
-version = "0.0.1-SNAPSHOT"
+version = "0.0.2"
 description = "A reactive web client library for Spring Boot"
 
 java {
     sourceCompatibility = JavaVersion.VERSION_25
     targetCompatibility = JavaVersion.VERSION_25
+    withSourcesJar()
+    withJavadocJar()
 }
 
 repositories {
@@ -25,14 +25,15 @@ repositories {
 }
 
 dependencies {
-    implementation("org.springframework.boot:spring-boot-starter-webflux")
+    api("org.springframework.boot:spring-boot-starter-webflux")
+    api("io.projectreactor.kotlin:reactor-kotlin-extensions")
+    api("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework:spring-aspects")
     implementation("tools.jackson.module:jackson-module-kotlin")
-    implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
@@ -41,17 +42,6 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
-val sourceJar by tasks.registering(Jar::class) {
-    description = "Generates a JAR containing the source code"
-    archiveClassifier.set("sources")
-    from(sourceSets["main"].allSource)
-}
-
-val javadocJar by tasks.registering(Jar::class) {
-    description = "Generates Javadoc and packages it into a JAR"
-    archiveClassifier.set("javadoc")
-    from(tasks.javadoc)
-}
 
 tasks {
     withType<Test> {
@@ -86,8 +76,6 @@ publishing {
             version = project.version.toString()
 
             from(components["java"])
-            artifact(sourceJar)
-            artifact(javadocJar)
 
             pom {
                 name.set("web-client-lib")
@@ -130,11 +118,14 @@ signing {
     val signingPassword = findProperty("signingPassword") as String?
     if (signingKey != null && signingPassword != null) {
         useInMemoryPgpKeys(signingKey, signingPassword)
+        sign(publishing.publications["mavenJava"])
     }
-    sign(publishing.publications["mavenJava"])
 }
 
 gradle.taskGraph.whenReady {
-    require(findProperty("signingKey") != null) { "signingKey is required for publishing" }
-    require(findProperty("signingPassword") != null) { "signingPassword is required for publishing" }
+    val isPublishing = allTasks.any { it.name.contains("publish", ignoreCase = true) }
+    if(isPublishing){
+        require(findProperty("signingKey") != null) { "signingKey is required for publishing" }
+        require(findProperty("signingPassword") != null) { "signingPassword is required for publishing" }
+    }
 }
