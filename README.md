@@ -1,5 +1,5 @@
 <!--- AUTO-GENERATED FULL PROJECT README (2026-04-25) -->
-# Web Client Auth Library
+# Web Client Library
 
 A flexible, configurable authentication library for Spring WebFlux projects. It supports both internal and external token validation with pluggable claims mapping, and is designed for extensibility and integration in modern Kotlin/Spring applications.
 
@@ -113,9 +113,6 @@ web-client-lib:
         authenticated:
           - /internal-api/**
 
-info:
-  app:
-    name: "web-client-lib"
 ```
 
 **Configurable Properties:**
