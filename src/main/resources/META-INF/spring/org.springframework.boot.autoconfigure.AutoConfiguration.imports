@@ -1,0 +1,7 @@
+com.axis.thanos.security.SecurityConfiguration
+com.axis.thanos.mapping.ApplicationContextUtils
+com.axis.thanos.web_client.ExchangeStrategiesConfiguration
+com.axis.thanos.web_client.WebClientConfiguration
+com.axis.thanos.exception_handling.ExceptionAdvisor
+com.axis.thanos.security.AuthenticationWebfluxConfigurer
+com.axis.thanos.featureToggleUtil.FeatureToggleConfiguration

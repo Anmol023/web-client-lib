@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <contextName>thanos-app</contextName>
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="com.axis.thanos.logging.filter.LogTypeFilter">
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                    <timeZone>IST</timeZone>
+                </timestamp>
+                <loggerName>
+                    <fieldName>logger</fieldName>
+                </loggerName>
+                <pattern>
+                    <pattern>
+                        {
+                        "details": "#tryJson{%message}"
+                        }
+                    </pattern>
+                </pattern>
+                <logLevel>
+                    <fieldName>level</fieldName>
+                </logLevel>
+                <arguments>
+                    <includeNonStructuredArguments>true</includeNonStructuredArguments>
+                </arguments>
+                <stackTrace>
+                    <fieldName>stack</fieldName>
+                </stackTrace>
+            </providers>
+        </encoder>
+    </appender>
+    <appender name="CONSOLE_STRING" class="ch.qos.logback.core.ConsoleAppender">
+        <filter class="com.axis.thanos.logging.filter.LogTypeFilter">
+            <onMatch>DENY</onMatch>
+            <onMismatch>ACCEPT</onMismatch>
+        </filter>
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <timestamp>
+                    <fieldName>timestamp</fieldName>
+                    <timeZone>IST</timeZone>
+                </timestamp>
+                <loggerName>
+                    <fieldName>logger</fieldName>
+                </loggerName>
+                <pattern>
+                    <pattern>
+                        {
+                        "details": {"message": "%message"}
+                        }
+                    </pattern>
+                </pattern>
+                <logLevel>
+                    <fieldName>level</fieldName>
+                </logLevel>
+                <arguments>
+                    <includeNonStructuredArguments>true</includeNonStructuredArguments>
+                </arguments>
+                <stackTrace>
+                    <fieldName>stack</fieldName>
+                </stackTrace>
+            </providers>
+        </encoder>
+    </appender>
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="CONSOLE_STRING"/>
+    </root>
+</configuration>
+
