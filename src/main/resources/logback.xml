@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <contextName>thanos-app</contextName>
+    <contextName>logger</contextName>
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <filter class="com.axis.thanos.logging.filter.LogTypeFilter">
+        <filter class="com.anmol.web_client_lib.filters.LogTypeFilter">
             <onMatch>ACCEPT</onMatch>
             <onMismatch>DENY</onMismatch>
         </filter>
@@ -35,7 +35,7 @@
         </encoder>
     </appender>
     <appender name="CONSOLE_STRING" class="ch.qos.logback.core.ConsoleAppender">
-        <filter class="com.axis.thanos.logging.filter.LogTypeFilter">
+        <filter class="com.anmol.web_client_lib.filters.LogTypeFilter">
             <onMatch>DENY</onMatch>
             <onMismatch>ACCEPT</onMismatch>
         </filter>

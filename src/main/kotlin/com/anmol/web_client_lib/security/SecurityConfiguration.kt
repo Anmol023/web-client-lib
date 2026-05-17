@@ -1,6 +1,7 @@
 package com.anmol.web_client_lib.security
 
 import com.anmol.web_client_lib.logging.logOnSuccess
+import com.anmol.web_client_lib.security.config.SecurityProperties
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.ComponentScan
@@ -30,7 +31,7 @@ class SecurityConfiguration(val securityProperties: SecurityProperties) {
 
     @Bean
     fun authenticationManager(
-        tokenValidationService: TokenService,
+        tokenValidationService: TokenValidationService,
         externalTokenValidationService: ExternalTokenValidationService
     ): AuthenticationManager {
         return AuthenticationManager(tokenValidationService, externalTokenValidationService)

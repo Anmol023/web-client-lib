@@ -1,12 +1,11 @@
 package com.anmol.web_client_lib.security
 
-import com.anmol.web_client_lib.expection_handling.ErrorResponse
 import com.anmol.web_client_lib.expection_handling.UnauthorizedException
 import com.anmol.web_client_lib.expection_handling.WebClientError
 import com.anmol.web_client_lib.logging.logOnError
 import com.anmol.web_client_lib.logging.logOnSuccess
+import com.anmol.web_client_lib.security.config.TokenServiceProperties
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Profile
 import org.springframework.stereotype.Component
@@ -58,7 +57,9 @@ data class ValidateAuthTokenRequest(val token: String, val externalSystemType: E
 
 @Profile(*["local", "test"])
 @Component
-class ExternalTokenValidationServiceLocal : ExternalTokenValidationService(WebClient.create(), DefaultClaimsMapper(), TokenServiceProperties()) {
+class ExternalTokenValidationServiceLocal : ExternalTokenValidationService(WebClient.create(), DefaultClaimsMapper(),
+    TokenServiceProperties()
+) {
     override fun validate(externalSystemAuthenticationToken: ExternalSystemAuthenticationToken): Mono<CustomerAuthenticationData> {
         // Return a dummy CustomerAuthenticationData for local/test
         return Mono.just(

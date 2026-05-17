@@ -3,6 +3,7 @@ package com.anmol.web_client_lib
 import com.anmol.web_client_lib.security.*
 import com.anmol.web_client_lib.expection_handling.UnauthorizedException
 import com.anmol.web_client_lib.expection_handling.WebClientError
+import com.anmol.web_client_lib.security.config.TokenServiceProperties
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.web.reactive.function.client.WebClient
@@ -55,7 +56,7 @@ class TokenServiceStub(
     val claimsMapper: ClaimsMapper,
     val properties: TokenServiceProperties,
     private val response: Map<String, Any>
-) : TokenService(webClient, claimsMapper, properties) {
+) : TokenValidationService(webClient, claimsMapper, properties) {
     @Suppress("UNCHECKED_CAST")
     override fun validate(token: String, requestUrl: String): Mono<CustomerAuthenticationData> {
         val valid = response["valid"] == true

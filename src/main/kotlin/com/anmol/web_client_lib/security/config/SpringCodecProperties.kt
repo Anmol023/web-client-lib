@@ -1,6 +1,6 @@
-package com.axis.thanos.config
+package com.anmol.web_client_lib.security.config
 
-import org.springframework.boot.autoconfigure.codec.CodecProperties
+import org.springframework.boot.http.codec.autoconfigure.HttpCodecsProperties
 import org.springframework.util.unit.DataSize
 
 /**
@@ -9,5 +9,5 @@ import org.springframework.util.unit.DataSize
  * If configured then configured value will be used.
  * Else default value of 256 will be configured.
  */
-fun CodecProperties.getMaxInMemorySizeWithDefault() =
-    if (this.maxInMemorySize == null) DataSize.ofKilobytes(256) else this.maxInMemorySize
+fun HttpCodecsProperties.getMaxInMemorySizeWithDefault() =
+    this.maxInMemorySize ?: DataSize.ofKilobytes(256)

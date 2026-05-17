@@ -23,7 +23,7 @@ open class WebClientLoggingFilter(
 
     override fun filter(request: ClientRequest, next: ExchangeFunction): Mono<ClientResponse> {
         val invocationTime = System.currentTimeMillis()
-        return LoggingContext.Companion.fromSubscriberContext()
+        return LoggingContext.fromSubscriberContext()
             .doOnSuccess {
                 if (loggingHeadersEnabled)
                     logger.info(

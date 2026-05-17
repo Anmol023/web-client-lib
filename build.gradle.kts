@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "io.github.anmol023"
-version = "0.0.2"
+version = "0.0.3"
 description = "A reactive web client library for Spring Boot"
 
 java {
@@ -34,6 +34,7 @@ dependencies {
     implementation("org.springframework:spring-aspects")
     implementation("tools.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("net.logstash.logback:logstash-logback-encoder:8.1")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.projectreactor:reactor-test")
@@ -62,9 +63,6 @@ tasks {
 
     jar {
         enabled = true
-        manifest {
-            attributes["Start-Class"] = ""
-        }
     }
 }
 

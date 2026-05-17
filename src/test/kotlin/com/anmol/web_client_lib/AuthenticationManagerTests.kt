@@ -11,7 +11,7 @@ import reactor.test.StepVerifier
 class AuthenticationManagerTests {
     @Test
     fun `authenticate with AuthenticationToken returns authenticated`() {
-        val tokenService = Mockito.mock(TokenService::class.java)
+        val tokenService = Mockito.mock(TokenValidationService::class.java)
         val externalService = Mockito.mock(ExternalTokenValidationService::class.java)
         val manager = AuthenticationManager(tokenService, externalService)
         val auth = AuthenticationToken("token", requestUrl = "url")
@@ -23,7 +23,7 @@ class AuthenticationManagerTests {
 
     @Test
     fun `authenticate with ExternalSystemAuthenticationToken returns authenticated`() {
-        val tokenService = Mockito.mock(TokenService::class.java)
+        val tokenService = Mockito.mock(TokenValidationService::class.java)
         val externalService = Mockito.mock(ExternalTokenValidationService::class.java)
         val manager = AuthenticationManager(tokenService, externalService)
         val auth = ExternalSystemAuthenticationToken("token", requestUrl = "url", externalSystemType = ExternalSystemType.external)
@@ -35,7 +35,7 @@ class AuthenticationManagerTests {
 
     @Test
     fun `authenticate with unknown type throws CredentialsExpiredException`() {
-        val tokenService = Mockito.mock(TokenService::class.java)
+        val tokenService = Mockito.mock(TokenValidationService::class.java)
         val externalService = Mockito.mock(ExternalTokenValidationService::class.java)
         val manager = AuthenticationManager(tokenService, externalService)
         val unknownAuth = Mockito.mock(Authentication::class.java)

@@ -1,4 +1,4 @@
-package com.axis.thanos.logging.filter
+package com.anmol.web_client_lib.filters
 
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.filter.AbstractMatcherFilter

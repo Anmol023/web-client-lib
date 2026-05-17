@@ -2,12 +2,11 @@ package com.anmol.web_client_lib.security
 
 import org.springframework.security.authentication.CredentialsExpiredException
 import org.springframework.security.authentication.ReactiveAuthenticationManager
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import reactor.core.publisher.Mono
 
 class AuthenticationManager(
-    private val tokenValidationService: TokenService,
+    private val tokenValidationService: TokenValidationService,
     private val externalTokenValidationService: ExternalTokenValidationService
 ) : ReactiveAuthenticationManager {
 

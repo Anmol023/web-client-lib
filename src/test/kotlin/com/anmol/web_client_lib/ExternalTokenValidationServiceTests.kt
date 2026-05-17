@@ -3,6 +3,7 @@ package com.anmol.web_client_lib
 import com.anmol.web_client_lib.security.*
 import com.anmol.web_client_lib.expection_handling.UnauthorizedException
 import com.anmol.web_client_lib.expection_handling.WebClientError
+import com.anmol.web_client_lib.security.config.TokenServiceProperties
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.web.reactive.function.client.WebClient

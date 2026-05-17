@@ -2,6 +2,7 @@ package com.anmol.web_client_lib.security
 
 import com.anmol.web_client_lib.expection_handling.UnauthorizedException
 import com.anmol.web_client_lib.expection_handling.WebClientError
+import com.anmol.web_client_lib.security.config.TokenServiceProperties
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Profile
@@ -12,7 +13,7 @@ import reactor.core.publisher.Mono
 
 @Component
 @ConditionalOnMissingBean(TokenServiceLocal::class)
-class TokenService(
+class TokenValidationService(
     @Autowired private val webClient: WebClient,
     @Autowired private val claimsMapper: ClaimsMapper,
     @Autowired private val properties: TokenServiceProperties
@@ -46,7 +47,7 @@ class TokenService(
 
 @Profile(*["local", "test"])
 @Component
-class TokenServiceLocal : TokenService(WebClient.create(), DefaultClaimsMapper(), TokenServiceProperties()) {
+class TokenServiceLocal : TokenValidationService(WebClient.create(), DefaultClaimsMapper(), TokenServiceProperties()) {
     override fun validate(token: String, requestUrl: String): Mono<CustomerAuthenticationData> {
         return Mono.just(
             CustomerAuthenticationData(
