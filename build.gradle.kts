@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "io.github.anmol023"
-version = "0.0.3"
+version = "0.0.4"
 description = "A reactive web client library for Spring Boot"
 
 java {
