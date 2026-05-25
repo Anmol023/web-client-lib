@@ -14,8 +14,8 @@ internal object ReactiveContext {
         context: ContextView,
         key: String
     ): Map<String, String>?{
-        val value = if (context.hasKey(ServerWebExchange::class))
-            context.get<ServerWebExchange>(ServerWebExchange::class).request.headers.getFirst(key)
+        val value = if (context.hasKey(ServerWebExchange::class.java))
+            context.get(ServerWebExchange::class.java).request.headers.getFirst(key)
         else null
 
         return value?.split(";")?.associate {
@@ -41,8 +41,8 @@ internal object ReactiveContext {
     }
 
     fun getValueFromHeaders(context: ContextView, key: String): String? {
-        return if (context.hasKey(ServerWebExchange::class)) {
-            context.get<ServerWebExchange>(ServerWebExchange::class).request.headers.getFirst(key)
+        return if (context.hasKey(ServerWebExchange::class.java)) {
+            context.get(ServerWebExchange::class.java).request.headers.getFirst(key)
         } else {
             null
         }

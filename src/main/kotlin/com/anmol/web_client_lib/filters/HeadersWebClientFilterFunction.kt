@@ -60,7 +60,7 @@ class HeadersWebClientFilterFunction : ExchangeFilterFunction {
     private fun authToken(headers: HttpHeaders): String? = headers[HttpHeaders.AUTHORIZATION]?.first()
 
     private fun identifiers(headers: HttpHeaders, context: ContextView): String? {
-        val identifiersFromHeaderOrContext = headers[IDENTIFIERS_HEADER]?.first() ?: context.getOrDefault("IDENTIFIERS_HEADER", null as String?)
+        val identifiersFromHeaderOrContext = headers[IDENTIFIERS_HEADER]?.first() ?: context.getOrDefault(IDENTIFIERS_HEADER, null as String?)
         return identifiersFromHeaderOrContext.let{ if(!it.isNullOrEmpty()) it else null }
     }
 

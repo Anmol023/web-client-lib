@@ -61,8 +61,11 @@ tasks {
 
     bootJar { enabled = false }
 
-    jar {
-        enabled = true
+    named<Jar>("sourcesJar") {
+        enabled = false
+    }
+    named<Jar>("javadocJar") {
+        enabled = false
     }
 }
 

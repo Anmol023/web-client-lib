@@ -55,7 +55,7 @@ open class WebClientLoggingFilter(
                         } else {
                             logger.error(
                                 details = LogDetails(
-                                    errorCode = "THAN-3001",
+                                    errorCode = "ERROR-101",
                                     message = "Web request failed",
                                     uriWithParams = createUrlWithParamsForLogging(request),
                                     responseCode = statusCode.value().toString(),
