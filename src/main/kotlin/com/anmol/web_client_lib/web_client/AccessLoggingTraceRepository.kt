@@ -20,10 +20,7 @@ class AccessLoggingTraceRepository : InMemoryHttpExchangeRepository() {
         val logDetails = LogDetails(
             message = "Logging request, response headers for: ${request.uri}",
             requestMethod = HttpMethod.valueOf(request.method.uppercase()),
-            requestHeaders = request.headers.filter { header ->
-                val key1 = header.key
-                key1.lowercase() !in listOf("authorization", "x-marketplace-app-secret")
-            },
+            requestHeaders = request.headers,
             responseCode = trace.response.status.toString(),
             responseHeaders = trace.response.headers,
             identifiers = request.getIdentifiersOrDefault(),
