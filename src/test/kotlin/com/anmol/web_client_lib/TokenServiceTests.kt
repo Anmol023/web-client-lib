@@ -4,6 +4,7 @@ import com.anmol.web_client_lib.security.*
 import com.anmol.web_client_lib.expection_handling.UnauthorizedException
 import com.anmol.web_client_lib.expection_handling.WebClientError
 import com.anmol.web_client_lib.security.config.TokenServiceProperties
+import com.anmol.web_client_lib.web_client.WebClientWrapper
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.web.reactive.function.client.WebClient
@@ -23,8 +24,8 @@ class TokenServiceTests {
 
     @Test
     fun `valid token returns authentication data`() {
-        val webClient = Mockito.mock(WebClient::class.java)
-        val tokenService = TokenServiceStub(webClient, claimsMapper, properties, validResponse)
+        val webClientWrapper = Mockito.mock(WebClientWrapper::class.java)
+        val tokenService = TokenServiceStub(webClientWrapper, claimsMapper, properties, validResponse)
         StepVerifier.create(tokenService.validate("token", "url"))
             .expectNextMatches { it.id == "1234567890" }
             .verifyComplete()
@@ -32,8 +33,8 @@ class TokenServiceTests {
 
     @Test
     fun `invalid token throws UnauthorizedException`() {
-        val webClient = Mockito.mock(WebClient::class.java)
-        val tokenService = TokenServiceStub(webClient, claimsMapper, properties, invalidResponse)
+        val webClientWrapper = Mockito.mock(WebClientWrapper::class.java)
+        val tokenService = TokenServiceStub(webClientWrapper, claimsMapper, properties, invalidResponse)
         StepVerifier.create(tokenService.validate("token", "url"))
             .expectError(UnauthorizedException::class.java)
             .verify()
@@ -43,8 +44,8 @@ class TokenServiceTests {
     fun `missing required claim throws UnauthorizedException`() {
         val claims = mapOf("mobileNumber" to "1234567890") // missing role
         val response = mapOf("valid" to true, "claims" to claims)
-        val webClient = Mockito.mock(WebClient::class.java)
-        val tokenService = TokenServiceStub(webClient, claimsMapper, properties, response)
+        val webClientWrapper = Mockito.mock(WebClientWrapper::class.java)
+        val tokenService = TokenServiceStub(webClientWrapper, claimsMapper, properties, response)
         StepVerifier.create(tokenService.validate("token", "url"))
             .expectError(UnauthorizedException::class.java)
             .verify()
@@ -52,11 +53,11 @@ class TokenServiceTests {
 }
 
 class TokenServiceStub(
-    webClient: WebClient,
+    webClientWrapper: WebClientWrapper,
     val claimsMapper: ClaimsMapper,
     val properties: TokenServiceProperties,
     private val response: Map<String, Any>
-) : TokenValidationService(webClient, claimsMapper, properties) {
+) : TokenValidationService(webClientWrapper, claimsMapper, properties) {
     @Suppress("UNCHECKED_CAST")
     override fun validate(token: String, requestUrl: String): Mono<CustomerAuthenticationData> {
         val valid = response["valid"] == true
