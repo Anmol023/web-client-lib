@@ -29,6 +29,8 @@ import reactor.core.publisher.Mono
 @EnableConfigurationProperties(SecurityProperties::class)
 class SecurityConfiguration(val securityProperties: SecurityProperties) {
 
+    private val _tokenHeaderName = "x-session-id"
+
     @Bean
     fun authenticationManager(
         tokenValidationService: TokenValidationService,
@@ -80,7 +82,7 @@ class SecurityConfiguration(val securityProperties: SecurityProperties) {
         val externallyExposedEndpointType = securityProperties.getExternallyExposedEndpointType(requestPath)
 
         return if (externallyExposedEndpointType != null) {
-            val authToken = exchange.request.headers.getFirst(HttpHeaders.AUTHORIZATION).orEmpty()
+            val authToken = exchange.request.headers.getFirst(_tokenHeaderName).orEmpty()
             Mono.just(
                 ExternalSystemAuthenticationToken(
                     token = authToken,
@@ -91,7 +93,7 @@ class SecurityConfiguration(val securityProperties: SecurityProperties) {
                 )
             ).logOnSuccess(message = "Extracted external system token") as Mono<Authentication>
         }  else {
-            val authToken = exchange.request.headers.getFirst(HttpHeaders.AUTHORIZATION).orEmpty()
+            val authToken = exchange.request.headers.getFirst(_tokenHeaderName).orEmpty()
             Mono.just(AuthenticationToken(authToken, "", "", requestPath)) as Mono<Authentication>
         }
     }

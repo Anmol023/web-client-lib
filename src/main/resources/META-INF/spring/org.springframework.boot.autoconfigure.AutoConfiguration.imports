@@ -6,3 +6,4 @@ com.anmol.web_client_lib.security.AuthenticationTokenDataResolver
 com.anmol.web_client_lib.security.CustomerAuthenticationDataUtil
 com.anmol.web_client_lib.web_client.ExchangeStrategiesConfiguration
 com.anmol.web_client_lib.filters.WebClientLoggingFilter
+com.anmol.web_client_lib.logging.ServiceDetails
